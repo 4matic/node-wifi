@@ -18,9 +18,9 @@ function connectToWifi(config, ap, callback) {
   }
 
   execFile('nmcli', args, { env: env }, function(err, resp) {
-    // Errors from nmcli came from stdout, we test presence of 'Error: ' string
-    if (resp.includes('Error: ')) {
-      err = new Error(resp.replace('Error: ', ''));
+    // Errors from nmcli came from stderr, we test presence of 'Error: ' string
+    if (err && err.message && err.message.includes('Error: ')) {
+      err = new Error(err.message);
     }
     callback && callback(err);
   });
